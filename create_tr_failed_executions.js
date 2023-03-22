@@ -4,12 +4,12 @@ const fetch = require('node-fetch');
 const headers = {
   'accept': 'application/vnd.api+json; version=1'
 };
-const accessToken = 'urxaDXO0YGTl12E7P-pPpw';
-const uid = 'hahadouda@gmail.com';
-const clientId = 'hlTB8eEixwb0ZaQ55GPkzA';
+const accessToken = '<your access token>';
+const uid = '<your uid>';
+const clientId = '<your client id>';
 
-const projectId = '112169';
-const testRunId = '761578';
+const projectId = '<your project ID>';
+const testRunId = '<your test run ID>';
 
 const now = new Date();
 const dateString = now.toISOString().split('T')[0]; // get the date string in the format YYYY-MM-DD
