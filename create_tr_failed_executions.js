@@ -39,12 +39,11 @@ const fetchTestResults = async () => {
   
 // Step 2: Extract tests with "failed" status
 const extractFailedTests = async () => {
-  const { testResults, buildId } = await fetchTestResults();
+  const testResults = await fetchTestResults();
   const failedTests = {};
   for (const testSnapshotId in testResults) {
     if (testResults[testSnapshotId].status === 'failed') {
       const testId = testResults[testSnapshotId].snapshotId;
-      console.log(testResults[testSnapshotId].status);
       if (!failedTests[testId]) {
         const response = await fetch(`https://studio.cucumber.io/api/projects/${projectId}/test_runs/${testRunId}/test_snapshots/${testId}?include=scenario`, {
           headers: { ...headers, 'access-token': accessToken, 'uid': uid, 'client': clientId }
@@ -72,7 +71,6 @@ const createTestRunWithFailedTests = async (name, description) => {
         return;
       }
       const scenarioIds = Object.values(failedTests).map((test) => test.scenarioId);
-      console.log(scenarioIds);
       const testRunData = {
         data: {
           attributes: {
@@ -101,7 +99,7 @@ const createTestRunWithFailedTests = async (name, description) => {
     if (response.ok) {
         console.log(`New test run created with ID: ${data.data.id}`);
       } else if (response.status === 422) {
-        console.error(`Error: ${response.status} - ${data.errors[0].detail}`);
+        console.log(`A test run with this name "${newtestRunName}" already exists`);
       } else {
         console.error(`Error: ${response.status} - ${response.statusText}`);
       }
@@ -112,4 +110,3 @@ const createTestRunWithFailedTests = async (name, description) => {
   };
 
 createTestRunWithFailedTests(newtestRunName, newtestRunDescription);
-
